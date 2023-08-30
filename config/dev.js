@@ -1,8 +1,8 @@
+require('dotenv').config()
+
 module.exports = {
-  googleClientID:
-  'Your google client ID',
-  googleClientSecret: 'Your google secret',
-  mongoURI:
-  'YOur mongo connection string',
+  googleClientID: process.env.GOOGLE_CLIENT_ID,
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  mongoURI: process.env.MONGO_URI,
   cookieKey: '123123123',
-  };
+};
