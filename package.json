@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Full stack MERN App with cashing and testing",
   "main": "index.js",
-  "jest": {
-    "setupTestFrameworkScriptFile": "./tests/setup.js"
-  },
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js --ignore tests",
