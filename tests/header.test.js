@@ -39,7 +39,16 @@ test('When signed in, shows logout button', async () => {
 	const sessionString = Buffer.from(JSON.stringify(sessionObject)).toString('base64');
 	const Keygrip = require('keygrip');
 	const keys = require('../config/keys');
-	const keygrip = new Keygrip([keys.cookieKey]);
-	const sig = keygrip.sign('session=' + sessionString);
-	console.log(sessionString, sig);
+	const keygrip = new Keygrip([keys.cookieKey]);	
+	const sig = keygrip.sign('express:sess=' + sessionString);
+	
+	await page.setCookie({ name: 'express:sess', value: sessionString });	
+	await page.setCookie({ name: 'express:sess.sig', value: sig });
+
+	await page.reload();
+	await page.waitForSelector('a[href="/auth/logout"]');
+
+	const text = await page.$eval('a[href="/auth/logout"]', el => el.innerHTML);
+
+	expect(text).toEqual('Logout');
 });
