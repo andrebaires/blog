@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
+const sessionFactory = require('./factories/sessionFactory');
+const userFactory =  require('./factories/userFactory');
 
-var browser, page;
+let browser, page;
 
 beforeEach(async () => {
 	browser = await puppeteer.launch({
@@ -12,6 +14,7 @@ beforeEach(async () => {
 
 afterEach(async () => {
 	await browser.close();
+	await new Promise(resolve => setTimeout(resolve, 100));
 });
 
 test('The header has the correct text', async () => {
@@ -29,20 +32,10 @@ test('Clicking login starts oauth flow', async () => {
 });
 
 test('When signed in, shows logout button', async () => {
-	const id = '64ef8be89319e82e9dc3f517';
-	const Buffer = require('safe-buffer').Buffer;
-	const sessionObject = {
-		passport: {
-			user: id
-		}
-	};
-	const sessionString = Buffer.from(JSON.stringify(sessionObject)).toString('base64');
-	const Keygrip = require('keygrip');
-	const keys = require('../config/keys');
-	const keygrip = new Keygrip([keys.cookieKey]);	
-	const sig = keygrip.sign('express:sess=' + sessionString);
+	const user = await userFactory();
+	const { session, sig } = sessionFactory(user);
 	
-	await page.setCookie({ name: 'express:sess', value: sessionString });	
+	await page.setCookie({ name: 'express:sess', value: session });	
 	await page.setCookie({ name: 'express:sess.sig', value: sig });
 
 	await page.reload();
