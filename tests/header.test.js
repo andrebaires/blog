@@ -1,5 +1,3 @@
-const sessionFactory = require('./factories/sessionFactory');
-const userFactory =  require('./factories/userFactory');
 const mongoose = require('mongoose');
 const Page = require('./helpers/page');
 
@@ -12,7 +10,7 @@ beforeEach(async () => {
 
 afterEach(async () => {
 	await page.close();
-	await new Promise(resolve => setTimeout(resolve, 100));
+	await new Promise(resolve => setTimeout(resolve, 200));
 });
 
 afterAll(async () => {
@@ -34,15 +32,8 @@ test('Clicking login starts oauth flow', async () => {
 });
 
 test('When signed in, shows logout button', async () => {
-	const user = await userFactory();
-	const { session, sig } = sessionFactory(user);
 	
-	await page.setCookie({ name: 'express:sess', value: session });	
-	await page.setCookie({ name: 'express:sess.sig', value: sig });
-
-	await page.reload();
-	await page.waitForSelector('a[href="/auth/logout"]');
-
+	await page.login();
 	const text = await page.$eval('a[href="/auth/logout"]', el => el.innerHTML);
 
 	expect(text).toEqual('Logout');
