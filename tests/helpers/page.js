@@ -31,6 +31,10 @@ class CustomPage {
 		await this.page.reload();
 		await this.page.waitForSelector('a[href="/auth/logout"]');
 	}
+
+	async getContentsOf(selector) {
+		return this.page.$eval(selector, el => el.innerHTML);
+	}
 }
 
 module.exports = CustomPage;
