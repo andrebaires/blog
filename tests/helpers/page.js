@@ -8,7 +8,12 @@ class CustomPage {
 			headless: false
 		});
 
+		await new Promise(resolve => setTimeout(resolve, 100));
+		
 		const page = await browser.newPage();
+		
+		await new Promise(resolve => setTimeout(resolve, 100));
+
 		const customPage = new CustomPage(page);
 
 		return new Proxy(customPage, {
@@ -28,7 +33,7 @@ class CustomPage {
 		await this.page.setCookie({ name: 'express:sess', value: session });	
 		await this.page.setCookie({ name: 'express:sess.sig', value: sig });
 
-		await this.page.reload();
+		await this.page.goto('http://localhost:3000/blogs');
 		await this.page.waitForSelector('a[href="/auth/logout"]');
 	}
 

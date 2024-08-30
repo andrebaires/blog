@@ -10,11 +10,11 @@ beforeEach(async () => {
 
 afterEach(async () => {
 	await page.close();
-	await new Promise(resolve => setTimeout(resolve, 200));
+	await new Promise(resolve => setTimeout(resolve, 100));
 });
 
 afterAll(async () => {
-	mongoose.disconnect();
+	await mongoose.disconnect();
 });
 
 test('The header has the correct text', async () => {
