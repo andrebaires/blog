@@ -9,8 +9,8 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-	await page.close();
 	await new Promise(resolve => setTimeout(resolve, 100));
+	await page.close();
 });
 
 afterAll(async () => {
