@@ -17,6 +17,9 @@ afterAll(async () => {
 	await mongoose.disconnect();
 });
 
-test('Blogs', async () => {
-
+test('When logged in, can see blog create form', async () => {
+	await page.login();
+	await page.click('a.btn-floating');
+	const label = await page.getContentsOf('form label');
+	expect(label).toBe('Blog Title');
 });
